@@ -24,3 +24,18 @@ VOLUME ["/etc/nginx/sites-enabled", "/etc/nginx/certs", "/etc/nginx/conf.d", "/v
 COPY start.sh /start.sh
 CMD ["./start.sh"]
 EXPOSE 80 443 8080
+
+# vi Dockerfile
+
+FROM ubuntu:20.04
+LABEL maintainer="admin@myadmins.com"
+RUN apt update
+RUN apt install -y curl net-tools vim
+RUN apt install -y nginx
+ENV nginx_vhost /etc/nginx/sites-available/default
+ENV nginx_conf /etc/nginx/nginx.conf
+COPY default ${nginx_vhost}
+COPY index.html /var/www/html/
+CMD ["nginx", "-g", "daemon off;"]
+EXPOSE 8080
+
